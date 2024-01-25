@@ -1,0 +1,789 @@
+{
+	"info": {
+		"_postman_id": "7c45fa58-a395-4b5e-afff-06b421f76b9a",
+		"name": "Beribit API v1.1",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29808460"
+	},
+	"item": [
+		{
+			"name": "Trade",
+			"item": [
+				{
+					"name": "Get order by Id",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "UID",
+								"value": "{{UID}}",
+								"type": "text"
+							},
+							{
+								"key": "Signature",
+								"value": "{{hash}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/order/:OrderId?Timestamp={{timestamp}}",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"order",
+								":OrderId"
+							],
+							"query": [
+								{
+									"key": "Timestamp",
+									"value": "{{timestamp}}",
+									"description": "Временная метка (UTC+0)"
+								}
+							],
+							"variable": [
+								{
+									"key": "OrderId",
+									"value": "",
+									"description": "Ид ордера"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get depth",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "UID",
+								"value": "{{UID}}",
+								"type": "text"
+							},
+							{
+								"key": "Signature",
+								"value": "{{hash}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/depth/:marketId?Timestamp={{timestamp}}",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"depth",
+								":marketId"
+							],
+							"query": [
+								{
+									"key": "Timestamp",
+									"value": "{{timestamp}}",
+									"description": "Временная метка (UTC+0)"
+								}
+							],
+							"variable": [
+								{
+									"key": "marketId",
+									"value": "USDT_RUB",
+									"description": "Название рынка"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get orders by market",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "UID",
+								"value": "{{UID}}",
+								"type": "text"
+							},
+							{
+								"key": "Signature",
+								"value": "{{hash}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/orders/:market?Timestamp={{timestamp}}&OrderState=none&OrderBy=Descending&Limit=10&Offset=0",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"orders",
+								":market"
+							],
+							"query": [
+								{
+									"key": "Timestamp",
+									"value": "{{timestamp}}",
+									"description": "Временная метка (UTC+0)"
+								},
+								{
+									"key": "OrderState",
+									"value": "none",
+									"description": "Статус ордера (необязательный, по умолчанию none): \nnone - все статусы\nwait - активные\ndone - закрытые\ncancel - отмененные"
+								},
+								{
+									"key": "OrderBy",
+									"value": "Descending",
+									"description": "Сортировка (необязательный, по умолчанию descending):\ndescending - последний по времени оредний первый\nascending - последний по времени оредний последний"
+								},
+								{
+									"key": "Limit",
+									"value": "10",
+									"description": "Кол-во ордеров в выгрузке (необязательный, по умолчанию 10, максимум 50)"
+								},
+								{
+									"key": "Offset",
+									"value": "0",
+									"description": "Кол-во ордеров которые необходимо пропустить (необязательный, по умолчанию 0)"
+								}
+							],
+							"variable": [
+								{
+									"key": "market",
+									"value": "USDT_RUB"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add order",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "UID",
+								"value": "{{UID}}",
+								"type": "text"
+							},
+							{
+								"key": "Signature",
+								"value": "{{hash}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Market\": \"USDT_RUB\",\r\n    \"Volume\": 100.0,\r\n    \"Price\": 97.0, \r\n    \"OrderSide\": \"buy\", \r\n    \"OrderType\": \"limit\" \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/orders?Timestamp={{timestamp}}",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"orders"
+							],
+							"query": [
+								{
+									"key": "Timestamp",
+									"value": "{{timestamp}}",
+									"description": "Временная метка (UTC+0)"
+								}
+							]
+						},
+						"description": "### Create Order\n\nThis endpoint allows you to place an order in the specified market.\n\n- Method: POST\n- URL: {{URL}}/orders?Timestamp={{timestamp}}\n    \n\n#### Request Body\n\n- Market: (required) Name of the market.\n- Volume: (required) Amount in the selling currency.\n- Price: (required for OrderType = limit) The price.\n- OrderSide: (required) The side of the transaction (buy/sell).\n- OrderType: (required) The type of order (limit/market).\n    \n\nExample:\n\n``` json\n{\n  \"Market\": \"USDT_RUB\", // Название рынка (обязательный)\n  \"Volume\": 1.0,// Cумма в валюте продажи (обязательный)\n  \"Price\": 97.0, // Цена (обязательный для OrderType = limit)\n  \"OrderSide\": \"buy\",// Сторона сделки buy - покупка / sell - продажа (обязательный)\n  \"OrderType\": \"limit\"// Тип сделки limit - лимитный ордер / market - рыночный ордер (обязательный)\n}\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "Cancel order",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "UID",
+								"value": "{{UID}}",
+								"type": "text"
+							},
+							{
+								"key": "Signature",
+								"value": "{{hash}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/order/delete/:orderId?Timestamp={{timestamp}}",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"order",
+								"delete",
+								":orderId"
+							],
+							"query": [
+								{
+									"key": "Timestamp",
+									"value": "{{timestamp}}",
+									"description": "Временная метка (UTC+0)"
+								}
+							],
+							"variable": [
+								{
+									"key": "orderId",
+									"value": "",
+									"description": "Ид ордера"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Account",
+			"item": [
+				{
+					"name": "Account",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "UID",
+								"value": "{{UID}}",
+								"type": "text"
+							},
+							{
+								"key": "Signature",
+								"value": "{{hash}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/account/:Token?Timestamp={{timestamp}}",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"account",
+								":Token"
+							],
+							"query": [
+								{
+									"key": "Timestamp",
+									"value": "{{timestamp}}",
+									"description": "Временная метка (UTC+0)"
+								}
+							],
+							"variable": [
+								{
+									"key": "Token",
+									"value": "USDT",
+									"description": "Ид токена"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Accounts",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "UID",
+								"value": "{{UID}}",
+								"type": "text"
+							},
+							{
+								"key": "Signature",
+								"value": "{{hash}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/accounts?Timestamp={{timestamp}}",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"accounts"
+							],
+							"query": [
+								{
+									"key": "Timestamp",
+									"value": "{{timestamp}}",
+									"description": "Временная метка (UTC+0)"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Crypto",
+			"item": [
+				{
+					"name": "Generate Address",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "UID",
+								"value": "{{UID}}",
+								"type": "text"
+							},
+							{
+								"key": "Signature",
+								"value": "{{hash}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Blockchain\": \"TRC20\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/deposit/generate_address?Timestamp={{timestamp}}",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"deposit",
+								"generate_address"
+							],
+							"query": [
+								{
+									"key": "Timestamp",
+									"value": "{{timestamp}}"
+								}
+							]
+						},
+						"description": "\nThis endpoint is used to generate a deposit address for a specified blockchain. The HTTP POST request should be sent to {{URL}}/deposit/generate_address with a timestamp as a query parameter. The request body should be in raw format and include the \"Blockchain\" field.\n\n### Request Body\n- `Blockchain` (string): The specified blockchain for which the deposit address needs to be generated.\n\n### Response\n- Status: 200 OK\n- `Success` (boolean): Indicates whether the address generation was successful.\n- `Result` (object): Contains the details of the generated address, including the AddressId, Address, and Time.\n  - `AddressId` (string): The ID of the generated address.\n  - `Address` (string): The generated deposit address.\n  - `Time` (string): The timestamp of when the address was generated.\n- `Time` (string): The timestamp of the response.\n\n"
+					},
+					"response": []
+				},
+				{
+					"name": "Deposit History",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "UID",
+								"value": "{{UID}}",
+								"type": "text"
+							},
+							{
+								"key": "Signature",
+								"value": "{{hash}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/deposit/history?Timestamp={{timestamp}}",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"deposit",
+								"history"
+							],
+							"query": [
+								{
+									"key": "Timestamp",
+									"value": "{{timestamp}}",
+									"description": "Временная метка (UTC+0)"
+								},
+								{
+									"key": "AddressId",
+									"value": "4f78bef6-6354-45f0-91a0-bdb09395eb8a",
+									"description": "Ид адреса (необязательно)",
+									"disabled": true
+								},
+								{
+									"key": "Blockchain",
+									"value": "TRC20",
+									"description": "Ид блокчейна (необязательно)",
+									"disabled": true
+								},
+								{
+									"key": "Limit",
+									"value": "0",
+									"description": "Кол-во депозитов (необязательно)",
+									"disabled": true
+								},
+								{
+									"key": "Offset",
+									"value": "0",
+									"description": "Кол-во депозитов которые необходимо пропустить (необязательный, по умолчанию 0)",
+									"disabled": true
+								},
+								{
+									"key": "FromDate",
+									"value": "2023-12-31T21:00:00",
+									"description": "Дата начала поиска в UTC+0 (необязательно)",
+									"disabled": true
+								},
+								{
+									"key": "ToDate",
+									"value": "2024-12-31T21:00:00",
+									"description": "Дата конца поиска  в UTC+0 (необязательно)",
+									"disabled": true
+								}
+							]
+						},
+						"description": "This endpoint makes an HTTP GET request to retrieve deposit history with a specific timestamp. The request should be made to {{URL}}/deposit/history and include the query parameter Timestamp to specify the timestamp.\n\nThe response to the last call of this request returned a status code of 200, indicating a successful operation. The response body included a \"Success\" key with a boolean value, and a \"Result\" key containing an array of deposit history objects. Each deposit history object includes the following keys: \"Address\", \"Txid\", \"Blockchain\", \"Currency\", \"Amount\", \"Status\", and \"Time\".\n\nExample response:\n\n``` json\n{\n    \"Success\": true,\n    \"Result\": [\n        {\n            \"Address\": \"\",\n            \"Txid\": \"\",\n            \"Blockchain\": \"\",\n            \"Currency\": \"\",\n            \"Amount\": 0,\n            \"Status\": \"\",\n            \"Time\": \"\"\n        }\n    ],\n    \"Time\": \"\"\n}\n\n ```"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Code",
+			"item": [
+				{
+					"name": "Code transfer",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "UID",
+								"value": "{{UID}}",
+								"type": "text"
+							},
+							{
+								"key": "Signature",
+								"value": "{{hash}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Token\": \"RUB\",\r\n    \"UserToId\": \"BeribitID_Here\",\r\n    \"Amount\": 0\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/code/withdraw?Timestamp={{timestamp}}",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"code",
+								"withdraw"
+							],
+							"query": [
+								{
+									"key": "Timestamp",
+									"value": "{{timestamp}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Code deposit",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "UID",
+								"value": "{{UID}}",
+								"type": "text"
+							},
+							{
+								"key": "Signature",
+								"value": "{{hash}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Code\": \"beribitcode00000000000000000000000000000000\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/code/deposit?Timestamp={{timestamp}}",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"code",
+								"deposit"
+							],
+							"query": [
+								{
+									"key": "Timestamp",
+									"value": "{{timestamp}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"function isString(x) {",
+					"  return typeof request.data === 'string'",
+					"}",
+					"",
+					"var moment = require('moment');",
+					"",
+					"pm.collectionVariables.set('timestamp', moment().utc().format((\"YYYY-MM-DDTHH:mm:ss\")));",
+					"",
+					"const re = /{{(.*?)}}/g;",
+					"var queryString = pm.request.url.getQueryString();",
+					"var queries = queryString.match(re);",
+					"",
+					"if(queries != null){",
+					"    queries.forEach((element) => {",
+					"        var result = pm.collectionVariables.get(element.replace(\"{{\", \"\").replace(\"}}\", \"\"));",
+					"        queryString = queryString.replace(element, result);",
+					"    });",
+					"}",
+					"",
+					"var secret = pm.collectionVariables.get(\"Secret\");",
+					"",
+					"var payload = queryString;",
+					"",
+					"if(pm.request.method == \"POST\"){",
+					"    if(isString(request.data)){",
+					"        payload = queryString + \":\" + request.data;",
+					"    }",
+					"    else{",
+					"        payload = queryString + \":\";",
+					"    }",
+					"}",
+					"",
+					"var signBytes = CryptoJS.HmacSHA256(\"?\" + payload, secret);",
+					"var signHex = CryptoJS.enc.Hex.stringify(signBytes);",
+					"",
+					"pm.collectionVariables.set('hash', signHex);",
+					"",
+					"//console.log(\"test\");"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "URL",
+			"value": "https://api.beribit.com",
+			"type": "string"
+		},
+		{
+			"key": "UID",
+			"value": "insert_uid_here",
+			"type": "string"
+		},
+		{
+			"key": "Secret",
+			"value": "insert_secret_here",
+			"type": "string"
+		},
+		{
+			"key": "timestamp",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "hash",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
