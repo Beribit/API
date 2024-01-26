@@ -1,6 +1,5 @@
 # Руководство подключению к API 
 
-
 ## Навигация
 1. [Введение](#introduction)
 2. [Тестирование](#testing)
@@ -195,7 +194,7 @@ POST https://api.beribit.com/orders?Timestamp=2023-08-20T13:51:00
 }
 ```
 
-Пример ответа:
+<span style="color:green">Пример ответа (HTTP: 200):</span>
 ```<json>
 {
     "Success": true,
