@@ -18,6 +18,7 @@
 8.1 [Получить рынки](#trade_markets)<br/>
 8.2 [Получить комиссию](#trade_commission)<br/>
 8.3 [Получить стакан по рынку](#trade_depth)<br/>
+8.4 [Получить историю торговых операций](#trade_operations)<br/>
 
 ---
 
@@ -1652,5 +1653,200 @@ curl --location 'https://api.beribit.com/depth/USDT_RUB'
         ]
     },
     "Time": "2024-01-28T18:30:21.704762Z"
+}
+```
+
+### <a id="trade_operations">Получить историю торговых операций</a>
+Тип запроса: **GET**
+
+Авторизация: **Требуется**
+
+Путь: **/orders/{marketName}**
+
+Описание: **данная функция отвечает за получение данных по ордепам**
+
+Результат успешного выполнения: **возвращается список данных, каждая запись содержит в себе информацию: об названии (ид) рынка, код валюты цены, код валюты лота, минимальный размер лота**
+
+| Параметр | Тип | Обязательный | Примечание |
+| -- | -- | -- | -- |
+| OrderState | string | необязательный | Статус ордера (необязательный, по умолчанию none): none - все статусы; wait - активные; done - закрытые; cancel - отмененные |
+| OrderBy | string | необязательный | Сортировка (необязательный, по умолчанию descending): descending - последний по времени оредний первый; ascending - последний по времени оредний последний |
+| Limit | int | необязательный | Кол-во ордеров в выгрузке (необязательный, по умолчанию 10, максимум 50) |
+| Offset | int | необязательный | Кол-во ордеров которые необходимо пропустить (необязательный, по умолчанию 0) |
+Пример запроса:
+```
+curl --location 'https://api.beribit.com/orders/USDT_RUB?Timestamp=2024-01-28T18:30:21&OrderState=none&OrderBy=Descending&Limit=10&Offset=0' \
+--header 'UID: uid-here' \
+--header 'Signature: signature-here'
+```
+
+Пример ответа (HTTP Code 200):
+```json
+{
+    "Success": true,
+    "Result": [
+        {
+            "id": 60548627,
+            "market": "USDT_RUB",
+            "remaining_volume": 0.892,
+            "executed_volume": 98.427,
+            "volume": 99.319,
+            "side": "Buy",
+            "ord_type": "Market",
+            "state": "Done",
+            "funds_received": 1.088365,
+            "funds_fee": 0.001635,
+            "trades_count": 1,
+            "created_at": "2024-01-25T01:43:36.049047",
+            "updated_at": "2024-01-25T01:43:36.049047"
+        },
+        {
+            "id": 60548615,
+            "market": "USDT_RUB",
+            "remaining_volume": 0.9029,
+            "executed_volume": 0,
+            "volume": 0.9029,
+            "side": "Buy",
+            "ord_type": "Market",
+            "state": "Cancel",
+            "funds_received": 0,
+            "funds_fee": 0,
+            "trades_count": 0,
+            "created_at": "2024-01-25T01:43:08.396915",
+            "updated_at": "2024-01-25T01:43:08.396915"
+        },
+        {
+            "id": 59683033,
+            "market": "USDT_RUB",
+            "remaining_volume": 0,
+            "executed_volume": 2.733,
+            "volume": 2.733,
+            "side": "Buy",
+            "ord_type": "Market",
+            "state": "Done",
+            "funds_received": 0.029955,
+            "funds_fee": 0.000045,
+            "trades_count": 1,
+            "created_at": "2024-01-17T14:35:23.921405",
+            "updated_at": "2024-01-17T14:35:23.921405"
+        },
+        {
+            "id": 59127345,
+            "market": "USDT_RUB",
+            "remaining_volume": 0,
+            "executed_volume": 5,
+            "volume": 5,
+            "side": "Sell",
+            "ord_type": "Market",
+            "state": "Done",
+            "funds_received": 453.768325,
+            "funds_fee": 0.681675,
+            "trades_count": 1,
+            "created_at": "2024-01-12T23:05:57.026569",
+            "updated_at": "2024-01-12T23:05:57.026569"
+        },
+        {
+            "id": 59127344,
+            "market": "USDT_RUB",
+            "remaining_volume": 0,
+            "executed_volume": 454.5,
+            "volume": 454.5,
+            "side": "Buy",
+            "ord_type": "Market",
+            "state": "Done",
+            "funds_received": 4.9925,
+            "funds_fee": 0.0075,
+            "trades_count": 1,
+            "created_at": "2024-01-12T23:05:54.913525",
+            "updated_at": "2024-01-12T23:05:54.913525"
+        },
+        {
+            "id": 59124303,
+            "market": "USDT_RUB",
+            "remaining_volume": 0,
+            "executed_volume": 5,
+            "volume": 5,
+            "side": "Sell",
+            "ord_type": "Market",
+            "state": "Done",
+            "funds_received": 453.568625,
+            "funds_fee": 0.681375,
+            "trades_count": 1,
+            "created_at": "2024-01-12T22:15:41.83801",
+            "updated_at": "2024-01-12T22:15:41.83801"
+        },
+        {
+            "id": 59124302,
+            "market": "USDT_RUB",
+            "remaining_volume": 0,
+            "executed_volume": 454.3,
+            "volume": 454.3,
+            "side": "Buy",
+            "ord_type": "Market",
+            "state": "Done",
+            "funds_received": 4.9925,
+            "funds_fee": 0.0075,
+            "trades_count": 1,
+            "created_at": "2024-01-12T22:15:37.486923",
+            "updated_at": "2024-01-12T22:15:37.486923"
+        },
+        {
+            "id": 59030447,
+            "market": "USDT_RUB",
+            "remaining_volume": 0,
+            "executed_volume": 1,
+            "volume": 1,
+            "side": "Sell",
+            "ord_type": "Market",
+            "state": "Done",
+            "funds_received": 91.093155,
+            "funds_fee": 0.136845,
+            "trades_count": 1,
+            "created_at": "2024-01-11T22:14:18.123674",
+            "updated_at": "2024-01-11T22:14:18.123674"
+        },
+        {
+            "id": 59030437,
+            "market": "USDT_RUB",
+            "remaining_volume": 0,
+            "executed_volume": 91.24,
+            "volume": 91.24,
+            "side": "Buy",
+            "ord_type": "Market",
+            "state": "Done",
+            "funds_received": 0.9985,
+            "funds_fee": 0.0015,
+            "trades_count": 1,
+            "created_at": "2024-01-11T22:13:58.360604",
+            "updated_at": "2024-01-11T22:13:58.360604"
+        },
+        {
+            "id": 57103479,
+            "market": "USDT_RUB",
+            "remaining_volume": 10,
+            "executed_volume": 0,
+            "volume": 10,
+            "side": "Sell",
+            "ord_type": "Limit",
+            "state": "Cancel",
+            "price": 92,
+            "funds_received": 0,
+            "funds_fee": 0,
+            "trades_count": 0,
+            "created_at": "2023-12-28T09:21:14.849764",
+            "updated_at": "2023-12-28T09:21:14.849764"
+        }
+    ],
+    "Time": "2024-01-28T18:31:52.7489334Z"
+}
+```
+Пример ошибки (HTTP Code 401):
+```json
+{
+  "Success": false,
+  "Error": {
+    "Message": "Unauthorized"
+    "Time": "2024-01-26T15:33:41.0658698Z"
+  }
 }
 ```
