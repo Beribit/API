@@ -421,14 +421,14 @@ curl --location 'https://api.beribit.com/deposit/history?Timestamp=2024-01-26T15
 | Amount | string | обязательный | - | Количество валюты |
 | Token | string | обязательный | - | Токен |
 
-Список токенов:
-
-- RUB;
-- USDT;
-- BTC;
-- ETH;
-- BNB
-- TRX.
+|Список токенов |
+| -- |
+| RUB | 
+| USDT |
+| BTC |
+| ETH |
+| BNB |
+| TRX |
 
 Пример ответа (HTTP Code 200):
 ```
@@ -447,7 +447,7 @@ curl --location 'https://api.beribit.com/code/withdraw?Timestamp=2024-01-26T15:3
 {
     "Success": true,
     "Result": "32e2e57c-1e02-4b7c-77ff-bfb680d9374c",
-    "Time": "2023-10-20T12:54:31.9614616Z"
+    "Time": "2024-01-26T15:33:41.9614616Z"
 }
 ```
 
@@ -462,3 +462,13 @@ curl --location 'https://api.beribit.com/code/withdraw?Timestamp=2024-01-26T15:3
 }
 ```
 
+Пример ошибки (HTTP Code 400):
+```json
+{
+    "Success": false,
+    "Error": {
+        "Message": "UserToId not found"
+    },
+    "Time": "2024-01-26T15:33:41.9324992Z"
+}
+```
