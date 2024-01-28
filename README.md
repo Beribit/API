@@ -21,6 +21,8 @@
 8.4 [Получить историю торговых операций](#trade_operations)<br/>
 8.5 [Получить торговую операцию по id](#trade_id_operations)<br/>
 8.6 [Выставить ордер](#place_order)<br/>
+8.7 [Отменить торговую заявку](#cancel_order)<br/>
+
 ---
 
 ## <a id="introduction">Введение</a>
@@ -1970,5 +1972,60 @@ curl --location 'https://api.beribit.com/orders?Timestamp=2024-01-28T18:30:21' \
         "updated_at": "2024-01-28T19:02:07.9552322Z"
     },
     "Time": "2024-01-28T19:02:07.9685794Z"
+}
+```
+### <a id="cancel_order">Отменить торговую заявку</a>
+
+Тип запроса: **POST**
+
+Путь: **/orders/delete**
+
+Описание: **запрос позволяет отменить активную торговую заявку.**
+
+Результат успешного выполнения: **возвращается заявка до отмены**
+
+При ошибке: **возвращается код ответа 400 и текст ошибки, если:**
+- **валидация модели прошла неуспешно.**
+
+| Параметр | Тип | Обязательный | Значение по умолчанию | Примечание |
+| -- | -- | -- | -- | -- |
+| Ид заявки | int | обязательный | - | ид заявки |
+
+Пример запроса:
+```
+curl --location 'https://api.beribit.com/order/delete/61939228?Timestamp=2024-01-28T18:30:21' \
+--header 'UID: uid-here' \
+--header 'Signature: signature-here'
+--header 'Content-Type: application/json' \
+--data '{
+    "Market": "USDT_RUB",
+    "Volume": 100.0,
+    "Price": 92.0, 
+    "OrderSide": "buy", 
+    "OrderType": "limit" 
+}'
+```
+
+Пример ответа:
+```json
+{
+    "Success": true,
+    "Result": {
+        "id": 61939228,
+        "market": "USDT_RUB",
+        "remaining_volume": 99.68,
+        "executed_volume": 0,
+        "volume": 99.68,
+        "side": "Buy",
+        "ord_type": "Limit",
+        "state": "Cancel",
+        "price": 89,
+        "funds_received": 0,
+        "funds_fee": 0,
+        "trades_count": 0,
+        "created_at": "2024-01-28T19:10:10.506162",
+        "updated_at": "2024-01-28T19:10:10.506162"
+    },
+    "Time": "2024-01-28T19:10:26.192541Z"
 }
 ```
