@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "7c45fa58-a395-4b5e-afff-06b421f76b9a",
-		"name": "Beribit API v1.1",
+		"name": "Beribit API v1.3",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "29808460"
 	},
@@ -10,7 +10,7 @@
 			"name": "Trade",
 			"item": [
 				{
-					"name": "Get order by Id",
+					"name": "Get markets",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -40,13 +40,12 @@
 							}
 						],
 						"url": {
-							"raw": "{{URL}}/order/:OrderId?Timestamp={{timestamp}}",
+							"raw": "{{URL}}/markets?Timestamp={{timestamp}}",
 							"host": [
 								"{{URL}}"
 							],
 							"path": [
-								"order",
-								":OrderId"
+								"markets"
 							],
 							"query": [
 								{
@@ -54,12 +53,54 @@
 									"value": "{{timestamp}}",
 									"description": "Временная метка (UTC+0)"
 								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get commissions",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "UID",
+								"value": "{{UID}}",
+								"type": "text"
+							},
+							{
+								"key": "Signature",
+								"value": "{{hash}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/commission?Timestamp={{timestamp}}",
+							"host": [
+								"{{URL}}"
 							],
-							"variable": [
+							"path": [
+								"commission"
+							],
+							"query": [
 								{
-									"key": "OrderId",
-									"value": "",
-									"description": "Ид ордера"
+									"key": "Timestamp",
+									"value": "{{timestamp}}",
+									"description": "Временная метка (UTC+0)"
 								}
 							]
 						}
@@ -200,6 +241,63 @@
 					"response": []
 				},
 				{
+					"name": "Get order by Id",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "UID",
+								"value": "{{UID}}",
+								"type": "text"
+							},
+							{
+								"key": "Signature",
+								"value": "{{hash}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/order/:OrderId?Timestamp={{timestamp}}",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"order",
+								":OrderId"
+							],
+							"query": [
+								{
+									"key": "Timestamp",
+									"value": "{{timestamp}}",
+									"description": "Временная метка (UTC+0)"
+								}
+							],
+							"variable": [
+								{
+									"key": "OrderId",
+									"value": "",
+									"description": "Ид ордера"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Add order",
 					"event": [
 						{
@@ -231,7 +329,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"Market\": \"USDT_RUB\",\r\n    \"Volume\": 100.0,\r\n    \"Price\": 97.0, \r\n    \"OrderSide\": \"buy\", \r\n    \"OrderType\": \"limit\" \r\n}",
+							"raw": "{\r\n    \"Market\": \"USDT_RUB\",\r\n    \"Volume\": 100.0,\r\n    \"Price\": 89.0, \r\n    \"OrderSide\": \"buy\", \r\n    \"OrderType\": \"limit\" \r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -615,7 +713,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"Token\": \"RUB\",\r\n    \"UserToId\": \"BeribitID_Here\",\r\n    \"Amount\": 0\r\n}",
+							"raw": "{\r\n    \"Token\": \"RUB\",\r\n    \"UserToId\": \"BeribitID_Here\",\r\n    \"Amount\": 10\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
