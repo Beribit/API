@@ -16,6 +16,9 @@
 7.2 [Применить код](#deposit_code)<br/>
 8. [Торговые операции](#trade)<br/>
 8.1 [Получить рынки](#trade_markets)<br/>
+8.2 [Получить комиссию](#trade_commission)<br/>
+8.3 [Получить стакан по рынку](#trade_depth)<br/>
+
 ---
 
 ## <a id="introduction">Введение</a>
@@ -635,7 +638,7 @@ curl --location 'https://api.beribit.com/markets'
 }
 ```
 
-### <a id="trade_markets">Получить комиссии</a>
+### <a id="trade_commission">Получить комиссии</a>
 Тип запроса: **GET**
 
 Авторизация: **Требуется**
@@ -652,55 +655,1002 @@ curl --location 'https://api.beribit.com/markets'
 
 Пример запроса:
 ```
-curl --location 'https://api.beribit.com/markets'
+curl --location 'https://api.beribit.com/commission?Timestamp=2024-01-26T15:33:41' \
+--header 'UID: uid-here' \
+--header 'Signature: signature-here'
 ```
 
 Пример ответа (HTTP Code 200):
 ```json
 {
-  "Success": true,
-  "Result": [
-    {
-      "id": "USDT_RUB",
-      "price_unit": "RUB",
-      "price_step": 0.01,
-      "lot_unit": "USDT",
-      "lot_min": 0.01,
-      "size_step": 0.01
+    "Success": true,
+    "Result": {
+        "LimitOrder": 0.001,
+        "MarketOrder": 0.0015
     },
-    {
-      "id": "ETH_USDT",
-      "price_unit": "USDT",
-      "price_step": 0.01,
-      "lot_unit": "ETH",
-      "lot_min": 0.001,
-      "size_step": 0.001
+    "Time": "2024-01-26T15:33:41.3995218Z"
+}
+```
+Пример ошибки (HTTP Code 401):
+```json
+{
+  "Success": false,
+  "Error": {
+    "Message": "Unauthorized"
+    "Time": "2024-01-26T15:33:41.0658698Z"
+  }
+}
+```
+### <a id="trade_depth">Получить стакан по рынку</a>
+
+Авторизация: **Не требуется**
+
+Тип запроса: **GET**
+
+Путь: **/depth/{marketName}**
+
+Описание: **данная функция отвечает за получение данных стакана по рынку**
+
+Результат успешного выполнения: **возвращается данные по стакану для bids и asks, каждая запись содержит в себе информацию: цене, объеме, сумме, ставке, тип ордера (limit/factor)**
+
+| Параметр | Тип | Обязательный | Значение по умолчанию | Примечание |
+| -- | -- | -- | -- | -- |
+| marketName | string | обязательный | - | название (ид) рынка |
+
+Пример запроса:
+```
+curl --location 'https://api.beribit.com/depth/USDT_RUB'
+```
+
+Пример ответа:
+```json
+{
+    "Success": true,
+    "Result": {
+        "timestamp": 1706466621,
+        "asks": [
+            {
+                "price": 91.15,
+                "volume": 16147686.4535,
+                "amount": 177155.09,
+                "factor": 1.0157120570537107198573657232,
+                "type": "Limit"
+            },
+            {
+                "price": 91.16,
+                "volume": 15316533.6424,
+                "amount": 168018.14,
+                "factor": 1.0158234900824604412747938489,
+                "type": "Limit"
+            },
+            {
+                "price": 91.17,
+                "volume": 4273072.2576,
+                "amount": 46869.28,
+                "factor": 1.0159349231112101626922219746,
+                "type": "Limit"
+            },
+            {
+                "price": 91.18,
+                "volume": 8531562.153,
+                "amount": 93568.35,
+                "factor": 1.0160463561399598841096501003,
+                "type": "Limit"
+            },
+            {
+                "price": 91.19,
+                "volume": 738639,
+                "amount": 8100,
+                "factor": 1.016157789168709605527078226,
+                "type": "Limit"
+            },
+            {
+                "price": 91.2,
+                "volume": 6840000,
+                "amount": 75000,
+                "factor": 1.0162692221974593269445063517,
+                "type": "Limit"
+            },
+            {
+                "price": 91.21,
+                "volume": 1338597.96,
+                "amount": 14676,
+                "factor": 1.0163806552262090483619344774,
+                "type": "Limit"
+            },
+            {
+                "price": 91.22,
+                "volume": 19733.6226,
+                "amount": 216.33,
+                "factor": 1.0164920882549587697793626031,
+                "type": "Limit"
+            },
+            {
+                "price": 91.23,
+                "volume": 54738,
+                "amount": 600,
+                "factor": 1.0166035212837084911967907288,
+                "type": "Limit"
+            },
+            {
+                "price": 91.25,
+                "volume": 117065.5375,
+                "amount": 1282.91,
+                "factor": 1.0168263873412079340316469802,
+                "type": "Limit"
+            },
+            {
+                "price": 91.26,
+                "volume": 18768768.876,
+                "amount": 205662.6,
+                "factor": 1.0169378203699576554490751059,
+                "type": "Limit"
+            },
+            {
+                "price": 91.27,
+                "volume": 54762,
+                "amount": 600,
+                "factor": 1.0170492533987073768665032316,
+                "type": "Limit"
+            },
+            {
+                "price": 91.29,
+                "volume": 54774,
+                "amount": 600,
+                "factor": 1.017272119456206819701359483,
+                "type": "Limit"
+            },
+            {
+                "price": 91.31,
+                "volume": 54786,
+                "amount": 600,
+                "factor": 1.0174949855137062625362157343,
+                "type": "Limit"
+            },
+            {
+                "price": 91.33,
+                "volume": 54798,
+                "amount": 600,
+                "factor": 1.0177178515712057053710719857,
+                "type": "Limit"
+            },
+            {
+                "price": 91.34,
+                "volume": 171262.5,
+                "amount": 1875,
+                "factor": 1.0178292845999554267885001114,
+                "type": "Limit"
+            },
+            {
+                "price": 91.35,
+                "volume": 54810,
+                "amount": 600,
+                "factor": 1.0179407176287051482059282371,
+                "type": "Limit"
+            },
+            {
+                "price": 91.37,
+                "volume": 54822,
+                "amount": 600,
+                "factor": 1.0181635836862045910407844885,
+                "type": "Limit"
+            },
+            {
+                "price": 91.39,
+                "volume": 54834,
+                "amount": 600,
+                "factor": 1.0183864497437040338756407399,
+                "type": "Limit"
+            },
+            {
+                "price": 91.41,
+                "volume": 54846,
+                "amount": 600,
+                "factor": 1.0186093158012034767104969913,
+                "type": "Limit"
+            },
+            {
+                "price": 91.43,
+                "volume": 54858,
+                "amount": 600,
+                "factor": 1.0188321818587029195453532427,
+                "type": "Limit"
+            },
+            {
+                "price": 91.45,
+                "volume": 54870,
+                "amount": 600,
+                "factor": 1.0190550479162023623802094941,
+                "type": "Limit"
+            },
+            {
+                "price": 91.47,
+                "volume": 977840.8263,
+                "amount": 10690.29,
+                "factor": 1.0192779139737018052150657455,
+                "type": "Limit"
+            },
+            {
+                "price": 91.49,
+                "volume": 912612.75,
+                "amount": 9975,
+                "factor": 1.0195007800312012480499219969,
+                "type": "Limit"
+            },
+            {
+                "price": 91.5,
+                "volume": 3431250,
+                "amount": 37500,
+                "factor": 1.0196122130599509694673501226,
+                "type": "Limit"
+            },
+            {
+                "price": 91.51,
+                "volume": 82140.2911,
+                "amount": 897.61,
+                "factor": 1.0197236460887006908847782483,
+                "type": "Limit"
+            },
+            {
+                "price": 91.52,
+                "volume": 13543.1296,
+                "amount": 147.98,
+                "factor": 1.019835079117450412302206374,
+                "type": "Limit"
+            },
+            {
+                "price": 91.53,
+                "volume": 6982242.4845,
+                "amount": 76283.65,
+                "factor": 1.02,
+                "type": "Factor"
+            },
+            {
+                "price": 91.54,
+                "volume": 152352.7682,
+                "amount": 1664.33,
+                "factor": 1.0200579451749498551370626254,
+                "type": "Limit"
+            },
+            {
+                "price": 91.55,
+                "volume": 203792.131,
+                "amount": 2226.02,
+                "factor": 1.0201693782036995765544907511,
+                "type": "Limit"
+            },
+            {
+                "price": 91.56,
+                "volume": 85304.6208,
+                "amount": 931.68,
+                "factor": 1.0202808112324492979719188768,
+                "type": "Limit"
+            },
+            {
+                "price": 91.57,
+                "volume": 83737.1022,
+                "amount": 914.46,
+                "factor": 1.0203922442611990193893470025,
+                "type": "Limit"
+            },
+            {
+                "price": 91.58,
+                "volume": 98141.707,
+                "amount": 1071.65,
+                "factor": 1.0205036772899487408067751281,
+                "type": "Limit"
+            },
+            {
+                "price": 91.59,
+                "volume": 565353.9294,
+                "amount": 6172.66,
+                "factor": 1.0206151103186984622242032538,
+                "type": "Limit"
+            },
+            {
+                "price": 91.6,
+                "volume": 420081.264,
+                "amount": 4586.04,
+                "factor": 1.0207265433474481836416313795,
+                "type": "Limit"
+            },
+            {
+                "price": 91.61,
+                "volume": 98598.0108,
+                "amount": 1076.28,
+                "factor": 1.0208379763761979050590595052,
+                "type": "Limit"
+            },
+            {
+                "price": 91.62,
+                "volume": 6957468.8784,
+                "amount": 75938.32,
+                "factor": 1.021,
+                "type": "Factor"
+            },
+            {
+                "price": 91.63,
+                "volume": 245074.5143,
+                "amount": 2674.61,
+                "factor": 1.0210608424336973478939157566,
+                "type": "Limit"
+            },
+            {
+                "price": 91.64,
+                "volume": 61578.4144,
+                "amount": 671.96,
+                "factor": 1.0211722754624470693113438823,
+                "type": "Limit"
+            },
+            {
+                "price": 91.65,
+                "volume": 86895.198,
+                "amount": 948.12,
+                "factor": 1.021283708491196790728772008,
+                "type": "Limit"
+            },
+            {
+                "price": 91.66,
+                "volume": 117388.962,
+                "amount": 1280.7,
+                "factor": 1.0213951415199465121462001337,
+                "type": "Limit"
+            },
+            {
+                "price": 91.67,
+                "volume": 252824.0266,
+                "amount": 2757.98,
+                "factor": 1.0215065745486962335636282594,
+                "type": "Limit"
+            },
+            {
+                "price": 91.68,
+                "volume": 151787.2416,
+                "amount": 1655.62,
+                "factor": 1.0216180075774459549810563851,
+                "type": "Limit"
+            },
+            {
+                "price": 91.69,
+                "volume": 13886702.6475,
+                "amount": 151452.75,
+                "factor": 1.0217294406061956763984845108,
+                "type": "Limit"
+            },
+            {
+                "price": 91.7,
+                "volume": 6909614.257,
+                "amount": 75350.21,
+                "factor": 1.0218408736349453978159126365,
+                "type": "Limit"
+            },
+            {
+                "price": 91.71,
+                "volume": 112367.6775,
+                "amount": 1225.25,
+                "factor": 1.0219523066636951192333407622,
+                "type": "Limit"
+            },
+            {
+                "price": 91.72,
+                "volume": 91168.7628,
+                "amount": 993.99,
+                "factor": 1.0220637396924448406507688879,
+                "type": "Limit"
+            },
+            {
+                "price": 91.73,
+                "volume": 55038,
+                "amount": 600,
+                "factor": 1.0221751727211945620681970136,
+                "type": "Limit"
+            },
+            {
+                "price": 93.7,
+                "volume": 3777.047,
+                "amount": 40.31,
+                "factor": 1.0441274793848896813015377758,
+                "type": "Limit"
+            },
+            {
+                "price": 200,
+                "volume": 200,
+                "amount": 1,
+                "factor": 2.2286605749944283485625139291,
+                "type": "Limit"
+            }
+        ],
+        "bids": [
+            {
+                "price": 91.14,
+                "volume": 79341.0156,
+                "amount": 870.54,
+                "factor": 1.0156006240249609984399375975,
+                "type": "Limit"
+            },
+            {
+                "price": 91.13,
+                "volume": 1864063.2387,
+                "amount": 20454.99,
+                "factor": 1.0154891909962112770225094718,
+                "type": "Limit"
+            },
+            {
+                "price": 91.12,
+                "volume": 349999.2096,
+                "amount": 3841.08,
+                "factor": 1.0153777579674615556050813461,
+                "type": "Limit"
+            },
+            {
+                "price": 91.11,
+                "volume": 249999.4623,
+                "amount": 2743.93,
+                "factor": 1.0152663249387118341876532204,
+                "type": "Limit"
+            },
+            {
+                "price": 91.1,
+                "volume": 300999.866,
+                "amount": 3304.06,
+                "factor": 1.0151548919099621127702250947,
+                "type": "Limit"
+            },
+            {
+                "price": 91.09,
+                "volume": 131872.8148,
+                "amount": 1447.72,
+                "factor": 1.015043458881212391352796969,
+                "type": "Limit"
+            },
+            {
+                "price": 91.07,
+                "volume": 220733.6446,
+                "amount": 2423.78,
+                "factor": 1.0148205928237129485179407176,
+                "type": "Limit"
+            },
+            {
+                "price": 91.06,
+                "volume": 203624.7296,
+                "amount": 2236.16,
+                "factor": 1.0147091597949632271005125919,
+                "type": "Limit"
+            },
+            {
+                "price": 91.05,
+                "volume": 440000.0355,
+                "amount": 4832.51,
+                "factor": 1.0145977267662135056830844662,
+                "type": "Limit"
+            },
+            {
+                "price": 91.04,
+                "volume": 264016,
+                "amount": 2900,
+                "factor": 1.0144862937374637842656563405,
+                "type": "Limit"
+            },
+            {
+                "price": 91.03,
+                "volume": 309999.9341,
+                "amount": 3405.47,
+                "factor": 1.0143748607087140628482282148,
+                "type": "Limit"
+            },
+            {
+                "price": 91.01,
+                "volume": 54606,
+                "amount": 600,
+                "factor": 1.0141519946512146200133719634,
+                "type": "Limit"
+            },
+            {
+                "price": 90.99,
+                "volume": 54594,
+                "amount": 600,
+                "factor": 1.0139291285937151771785157121,
+                "type": "Limit"
+            },
+            {
+                "price": 90.98,
+                "volume": 3787212.6326,
+                "amount": 41626.87,
+                "factor": 1.0138176955649654557610875864,
+                "type": "Limit"
+            },
+            {
+                "price": 90.97,
+                "volume": 54582,
+                "amount": 600,
+                "factor": 1.0137062625362157343436594607,
+                "type": "Limit"
+            },
+            {
+                "price": 90.96,
+                "volume": 1541.772,
+                "amount": 16.95,
+                "factor": 1.013594829507466012926231335,
+                "type": "Limit"
+            },
+            {
+                "price": 90.95,
+                "volume": 40460.017,
+                "amount": 444.86,
+                "factor": 1.0134833964787162915088032093,
+                "type": "Limit"
+            },
+            {
+                "price": 90.94,
+                "volume": 8699999.7218,
+                "amount": 95667.47,
+                "factor": 1.0133719634499665700913750836,
+                "type": "Limit"
+            },
+            {
+                "price": 90.93,
+                "volume": 54558,
+                "amount": 600,
+                "factor": 1.0132605304212168486739469579,
+                "type": "Limit"
+            },
+            {
+                "price": 90.92,
+                "volume": 2153550.2132,
+                "amount": 23686.21,
+                "factor": 1.0131490973924671272565188322,
+                "type": "Limit"
+            },
+            {
+                "price": 90.91,
+                "volume": 3006239.153,
+                "amount": 33068.3,
+                "factor": 1.0130376643637174058390907065,
+                "type": "Limit"
+            },
+            {
+                "price": 90.9,
+                "volume": 9179596.494,
+                "amount": 100985.66,
+                "factor": 1.0129262313349676844216625808,
+                "type": "Limit"
+            },
+            {
+                "price": 90.89,
+                "volume": 464183.4101,
+                "amount": 5107.09,
+                "factor": 1.0128147983062179630042344551,
+                "type": "Limit"
+            },
+            {
+                "price": 90.88,
+                "volume": 204749.9136,
+                "amount": 2252.97,
+                "factor": 1.0127033652774682415868063294,
+                "type": "Limit"
+            },
+            {
+                "price": 90.87,
+                "volume": 122771.7309,
+                "amount": 1351.07,
+                "factor": 1.0125919322487185201693782037,
+                "type": "Limit"
+            },
+            {
+                "price": 90.85,
+                "volume": 6336853.8205,
+                "amount": 69750.73,
+                "factor": 1.0123690661912190773345219523,
+                "type": "Limit"
+            },
+            {
+                "price": 90.83,
+                "volume": 54498,
+                "amount": 600,
+                "factor": 1.0121462001337196344996657009,
+                "type": "Limit"
+            },
+            {
+                "price": 90.82,
+                "volume": 2859.0136,
+                "amount": 31.48,
+                "factor": 1.0120347671049699130822375752,
+                "type": "Limit"
+            },
+            {
+                "price": 90.81,
+                "volume": 54486,
+                "amount": 600,
+                "factor": 1.0119233340762201916648094495,
+                "type": "Limit"
+            },
+            {
+                "price": 90.8,
+                "volume": 68249.82,
+                "amount": 751.65,
+                "factor": 1.0118119010474704702473813238,
+                "type": "Limit"
+            },
+            {
+                "price": 90.79,
+                "volume": 254473.4752,
+                "amount": 2802.88,
+                "factor": 1.0117004680187207488299531981,
+                "type": "Limit"
+            },
+            {
+                "price": 90.77,
+                "volume": 122636.6239,
+                "amount": 1351.07,
+                "factor": 1.0114776019612213059950969467,
+                "type": "Limit"
+            },
+            {
+                "price": 90.75,
+                "volume": 54450,
+                "amount": 600,
+                "factor": 1.0112547359037218631602406953,
+                "type": "Limit"
+            },
+            {
+                "price": 90.73,
+                "volume": 54438,
+                "amount": 600,
+                "factor": 1.0110318698462224203253844439,
+                "type": "Limit"
+            },
+            {
+                "price": 90.71,
+                "volume": 54426,
+                "amount": 600,
+                "factor": 1.0108090037887229774905281926,
+                "type": "Limit"
+            },
+            {
+                "price": 90.7,
+                "volume": 2043815.66,
+                "amount": 22533.8,
+                "factor": 1.0106975707599732560731000669,
+                "type": "Limit"
+            },
+            {
+                "price": 90.69,
+                "volume": 54414,
+                "amount": 600,
+                "factor": 1.0105861377312235346556719412,
+                "type": "Limit"
+            },
+            {
+                "price": 90.68,
+                "volume": 1537.026,
+                "amount": 16.95,
+                "factor": 1.0104747047024738132382438155,
+                "type": "Limit"
+            },
+            {
+                "price": 90.67,
+                "volume": 54402,
+                "amount": 600,
+                "factor": 1.0103632716737240918208156898,
+                "type": "Limit"
+            },
+            {
+                "price": 90.65,
+                "volume": 54390,
+                "amount": 600,
+                "factor": 1.0101404056162246489859594384,
+                "type": "Limit"
+            },
+            {
+                "price": 90.63,
+                "volume": 54378,
+                "amount": 600,
+                "factor": 1.009917539558725206151103187,
+                "type": "Limit"
+            },
+            {
+                "price": 90.61,
+                "volume": 154365.9143,
+                "amount": 1703.63,
+                "factor": 1.0096946735012257633162469356,
+                "type": "Limit"
+            },
+            {
+                "price": 90.59,
+                "volume": 54354,
+                "amount": 600,
+                "factor": 1.0094718074437263204813906842,
+                "type": "Limit"
+            },
+            {
+                "price": 90.57,
+                "volume": 54342,
+                "amount": 600,
+                "factor": 1.0092489413862268776465344328,
+                "type": "Limit"
+            },
+            {
+                "price": 90.55,
+                "volume": 54330,
+                "amount": 600,
+                "factor": 1.0090260753287274348116781814,
+                "type": "Limit"
+            },
+            {
+                "price": 90.53,
+                "volume": 54318,
+                "amount": 600,
+                "factor": 1.00880320927122799197682193,
+                "type": "Limit"
+            },
+            {
+                "price": 90.51,
+                "volume": 54306,
+                "amount": 600,
+                "factor": 1.0085803432137285491419656786,
+                "type": "Limit"
+            },
+            {
+                "price": 90.5,
+                "volume": 4838789.745,
+                "amount": 53467.29,
+                "factor": 1.0084689101849788277245375529,
+                "type": "Limit"
+            },
+            {
+                "price": 90.49,
+                "volume": 54294,
+                "amount": 600,
+                "factor": 1.0083574771562291063071094272,
+                "type": "Limit"
+            },
+            {
+                "price": 90.47,
+                "volume": 54282,
+                "amount": 600,
+                "factor": 1.0081346110987296634722531758,
+                "type": "Limit"
+            },
+            {
+                "price": 90.46,
+                "volume": 339749.668,
+                "amount": 3755.8,
+                "factor": 1.0080231780699799420548250501,
+                "type": "Limit"
+            },
+            {
+                "price": 90.45,
+                "volume": 54270,
+                "amount": 600,
+                "factor": 1.0079117450412302206373969244,
+                "type": "Limit"
+            },
+            {
+                "price": 90.44,
+                "volume": 3790615.3376,
+                "amount": 41913.04,
+                "factor": 1.0078003120124804992199687988,
+                "type": "Limit"
+            },
+            {
+                "price": 90.43,
+                "volume": 54258,
+                "amount": 600,
+                "factor": 1.0076888789837307778025406731,
+                "type": "Limit"
+            },
+            {
+                "price": 90.41,
+                "volume": 55778.4495,
+                "amount": 616.95,
+                "factor": 1.0074660129262313349676844217,
+                "type": "Limit"
+            },
+            {
+                "price": 90.4,
+                "volume": 14999.168,
+                "amount": 165.92,
+                "factor": 1.007354579897481613550256296,
+                "type": "Limit"
+            },
+            {
+                "price": 90.39,
+                "volume": 393983.7969,
+                "amount": 4358.71,
+                "factor": 1.0072431468687318921328281703,
+                "type": "Limit"
+            },
+            {
+                "price": 90.37,
+                "volume": 54222,
+                "amount": 600,
+                "factor": 1.0070202808112324492979719189,
+                "type": "Limit"
+            },
+            {
+                "price": 90.35,
+                "volume": 54210,
+                "amount": 600,
+                "factor": 1.0067974147537330064631156675,
+                "type": "Limit"
+            },
+            {
+                "price": 90.34,
+                "volume": 1531.263,
+                "amount": 16.95,
+                "factor": 1.0066859817249832850456875418,
+                "type": "Limit"
+            },
+            {
+                "price": 90.17,
+                "volume": 4318.2413,
+                "amount": 47.89,
+                "factor": 1.0047916202362380209494094049,
+                "type": "Limit"
+            },
+            {
+                "price": 90.11,
+                "volume": 184999.4344,
+                "amount": 2053.04,
+                "factor": 1.0041230220637396924448406508,
+                "type": "Limit"
+            },
+            {
+                "price": 89.83,
+                "volume": 0.8873999999999999999999999972,
+                "amount": 0.0098786596905265501502838695,
+                "factor": 1.001,
+                "type": "Factor"
+            },
+            {
+                "price": 89.3,
+                "volume": 200001.638,
+                "amount": 2239.66,
+                "factor": 0.9950969467350122576331624694,
+                "type": "Limit"
+            },
+            {
+                "price": 89,
+                "volume": 400900.5,
+                "amount": 4504.5,
+                "factor": 0.9917539558725206151103186985,
+                "type": "Limit"
+            },
+            {
+                "price": 88.78,
+                "volume": 49999.1204,
+                "amount": 563.18,
+                "factor": 0.9893024292400267439268999331,
+                "type": "Limit"
+            },
+            {
+                "price": 88.38,
+                "volume": 49999.2174,
+                "amount": 565.73,
+                "factor": 0.9848451080900378872297749053,
+                "type": "Limit"
+            },
+            {
+                "price": 88,
+                "volume": 2672272.24,
+                "amount": 30366.73,
+                "factor": 0.9806106529975484733675061288,
+                "type": "Limit"
+            },
+            {
+                "price": 87.78,
+                "volume": 49999.488,
+                "amount": 569.6,
+                "factor": 0.9781591263650546021840873635,
+                "type": "Limit"
+            },
+            {
+                "price": 87.38,
+                "volume": 49999.7098,
+                "amount": 572.21,
+                "factor": 0.9737018052150657454869623356,
+                "type": "Limit"
+            },
+            {
+                "price": 86.78,
+                "volume": 49999.1648,
+                "amount": 576.16,
+                "factor": 0.9670158234900824604412747938,
+                "type": "Limit"
+            },
+            {
+                "price": 86.38,
+                "volume": 49999.3354,
+                "amount": 578.83,
+                "factor": 0.962558502340093603744149766,
+                "type": "Limit"
+            },
+            {
+                "price": 81.33,
+                "volume": 299.2944,
+                "amount": 3.68,
+                "factor": 0.9062848228214842879429462893,
+                "type": "Limit"
+            },
+            {
+                "price": 80,
+                "volume": 800.8,
+                "amount": 10.01,
+                "factor": 0.8914642299977713394250055717,
+                "type": "Limit"
+            },
+            {
+                "price": 0.1,
+                "volume": 782.999,
+                "amount": 7829.99,
+                "factor": 0.001114330287497214174281257,
+                "type": "Limit"
+            },
+            {
+                "price": 0.09,
+                "volume": 0.09,
+                "amount": 1,
+                "factor": 0.0010028972587474927568531313,
+                "type": "Limit"
+            },
+            {
+                "price": 0.08,
+                "volume": 0.08,
+                "amount": 1,
+                "factor": 0.0008914642299977713394250056,
+                "type": "Limit"
+            },
+            {
+                "price": 0.07,
+                "volume": 0.07,
+                "amount": 1,
+                "factor": 0.0007800312012480499219968799,
+                "type": "Limit"
+            },
+            {
+                "price": 0.06,
+                "volume": 0.06,
+                "amount": 1,
+                "factor": 0.0006685981724983285045687542,
+                "type": "Limit"
+            },
+            {
+                "price": 0.05,
+                "volume": 0.05,
+                "amount": 1,
+                "factor": 0.0005571651437486070871406285,
+                "type": "Limit"
+            },
+            {
+                "price": 0.04,
+                "volume": 0.04,
+                "amount": 1,
+                "factor": 0.0004457321149988856697125028,
+                "type": "Limit"
+            },
+            {
+                "price": 0.03,
+                "volume": 0.03,
+                "amount": 1,
+                "factor": 0.0003342990862491642522843771,
+                "type": "Limit"
+            },
+            {
+                "price": 0.02,
+                "volume": 0.02,
+                "amount": 1,
+                "factor": 0.0002228660574994428348562514,
+                "type": "Limit"
+            },
+            {
+                "price": 0.01,
+                "volume": 1.5099,
+                "amount": 150.99,
+                "factor": 0.0001114330287497214174281257,
+                "type": "Limit"
+            }
+        ]
     },
-    {
-      "id": "BTC_USDT",
-      "price_unit": "USDT",
-      "price_step": 0.01,
-      "lot_unit": "BTC",
-      "lot_min": 0.0001,
-      "size_step": 0.0001
-    },
-    {
-      "id": "BNB_USDT",
-      "price_unit": "USDT",
-      "price_step": 0.01,
-      "lot_unit": "BNB",
-      "lot_min": 0.0001,
-      "size_step": 0.0001
-    },
-    {
-      "id": "TRX_USDT",
-      "price_unit": "USDT",
-      "price_step": 0.01,
-      "lot_unit": "TRX",
-      "lot_min": 0.0001,
-      "size_step": 0.0001
-    }
-  ],
-  "Time": "2024-01-28T18:21:49.8592526Z"
+    "Time": "2024-01-28T18:30:21.704762Z"
 }
 ```
