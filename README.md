@@ -19,7 +19,7 @@
 8.2 [Получить комиссию](#trade_commission)<br/>
 8.3 [Получить стакан по рынку](#trade_depth)<br/>
 8.4 [Получить историю торговых операций](#trade_operations)<br/>
-
+8.5 [Получить торговую операцию по id](#trade_id_operations)<br/>
 ---
 
 ## <a id="introduction">Введение</a>
@@ -1663,9 +1663,9 @@ curl --location 'https://api.beribit.com/depth/USDT_RUB'
 
 Путь: **/orders/{marketName}**
 
-Описание: **данная функция отвечает за получение данных по ордепам**
+Описание: **данная функция отвечает за получение данных по ордерам**
 
-Результат успешного выполнения: **возвращается список данных, каждая запись содержит в себе информацию: об названии (ид) рынка, код валюты цены, код валюты лота, минимальный размер лота**
+Результат успешного выполнения: **возвращается данные по ордерам**
 
 | Параметр | Тип | Обязательный | Примечание |
 | -- | -- | -- | -- |
@@ -1841,6 +1841,68 @@ curl --location 'https://api.beribit.com/orders/USDT_RUB?Timestamp=2024-01-28T18
     "Time": "2024-01-28T18:31:52.7489334Z"
 }
 ```
+Пример ошибки (HTTP Code 401):
+```json
+{
+  "Success": false,
+  "Error": {
+    "Message": "Unauthorized"
+    "Time": "2024-01-26T15:33:41.0658698Z"
+  }
+}
+```
+
+### <a id="trade_id_operations">Получить торговую операцию по id</a>
+Тип запроса: **GET**
+
+Авторизация: **Требуется**
+
+Путь: **/order/{orderId}**
+
+Описание: **данная функция отвечает за получение данных по ид ордера**
+
+Результат успешного выполнения: **возвращается данные по ордеру**
+
+Пример запроса:
+```
+curl --location 'https://api.beribit.com/order/59127345?Timestamp=2024-01-28T18:30:21' \
+--header 'UID: uid-here' \
+--header 'Signature: signature-here'
+```
+
+Пример ответа (HTTP Code 200):
+```json
+{
+    "Success": true,
+    "Result": {
+        "id": 59127345,
+        "market": "USDT_RUB",
+        "remaining_volume": 0,
+        "executed_volume": 5,
+        "volume": 5,
+        "side": "Sell",
+        "ord_type": "Market",
+        "state": "Done",
+        "funds_received": 453.768325,
+        "funds_fee": 0.681675,
+        "trades_count": 1,
+        "created_at": "2024-01-12T23:05:57.026569",
+        "updated_at": "2024-01-12T23:05:57.026569"
+    },
+    "Time": "2024-01-28T18:57:32.8012835Z"
+}
+```
+Пример ошибки (HTTP Code 400):
+```json
+{
+    "Success": false,
+    "Error": {
+        "Message": "Order not found"
+    },
+    "Time": "2024-01-28T18:57:55.3340153Z"
+}
+```
+
 Пример ошибки (HTTP Code 401):
 ```json
 {
