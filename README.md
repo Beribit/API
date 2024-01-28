@@ -8,6 +8,11 @@
 5. [Аккаунт](#account)<br/>
 5.1 [Получение баланса по всем валютам](#balance_all)<br/>
 5.2 [Функция получения баланса по конкретной валюте](#balance_token)
+6. [Криптовалюта](#crypto)<br/>
+6.1 [Сгенерировать депозитный адрес](#generate_deposit)<br/>
+6.2 [Получить историю пополнений криптовалюты](#history_deposit)<br/>
+7. [Код BERIBIT](#codes)<br/>
+7.1 [Перевод валюты внутри платформы](#transfer_code)<br/>
 
 ---
 
@@ -130,40 +135,66 @@ POST https://api.beribit.com/orders?Timestamp=2023-08-20T13:51:00
 
 Результат успешного выполнения: **возвращается название криптовалюты, сумма на открытом счету, сумма на закрытом счету и таймштамп.**
 
-Пример ответа:
+Пример запроса:
+```
+curl --location 'https://api.beribit.com/accounts?Timestamp=2024-01-26T15:33:41' \
+--header 'UID: uid-here' \
+--header 'Signature: signature-here'
+```
+
+Пример ответа (HTTP Code 200):
 ```json
 {
-    "Success": true,
-    "Result": [
-        {
-            "Currency": "RUB",
-            "Balance": 10000.00,
-            "Locked": 2000.00,
-            "Time": "2023-09-15T09:48:40.8485648Z"
-        },
-        {
-            "Currency": "ETH",
-            "Balance": 300.053021,
-            "Locked": 50.00,
-            "Time": "2023-09-15T09:48:40.848655Z"
-        },
-        {
-            "Currency": "USDT",
-            "Balance": 300.04,
-            "Locked": 2560.73,
-            "Time": "2023-09-15T09:48:40.8486553Z"
-        }
-    ]
+  "Success": true,
+  "Result": [
+    {
+      "CurrencyLabel": "RUB",
+      "Balance": 1005778.652637,
+      "Locked": 0,
+      "Timestamp": 1706283222
+    },
+    {
+      "CurrencyLabel": "BTC",
+      "Balance": 13.6344413325,
+      "Locked": 0,
+      "Timestamp": 1706283222
+    },
+    {
+      "CurrencyLabel": "ETH",
+      "Balance": 1,
+      "Locked": 0,
+      "Timestamp": 1706283222
+    },
+    {
+      "CurrencyLabel": "USDT",
+      "Balance": 8743.061909158,
+      "Locked": 1,
+      "Timestamp": 1706283222
+    },
+    {
+      "CurrencyLabel": "BNB",
+      "Balance": 999.959595,
+      "Locked": 0,
+      "Timestamp": 1706283222
+    },
+    {
+      "CurrencyLabel": "TRX",
+      "Balance": 884.9998251,
+      "Locked": 0,
+      "Timestamp": 1706283222
+    }
+  ],
+  "Time": "2024-01-26T15:33:41.0658698Z"
 }
 ```
 
-Пример ошибки:
+Пример ошибки (HTTP Code 401):
 ```json
 {
   "Success": false,
   "Error": {
     "Message": "Unauthorized"
-    "Time": "2023-09-05T10:25:06.6590684Z"
+    "Time": "2024-01-26T15:33:41.0658698Z"
   }
 }
 ```
@@ -188,31 +219,246 @@ POST https://api.beribit.com/orders?Timestamp=2023-08-20T13:51:00
 | Currency | string | обязательный | валюта, баланс которой требуется получить |
 
 Пример запроса:
-```json
-{
-  "Currency": "USDT",
-}
+```
+curl --location 'https://api.beribit.com/account/USDT?Timestamp=2024-01-26T15:33:41' \
+--header 'UID: uid-here' \
+--header 'Signature: signature-here'
 ```
 
-<span style="color:green">Пример ответа (HTTP: 200):</span>
+Пример ответа (HTTP Code 200):
 ```json
-{
+{{
     "Success": true,
     "Result": {
-        "Balance": 10000.00,
-        "Locked": 3500.05,
-        "Time": "2023-09-15T09:47:29.2933083Z"
-    }
+        "Balance": 8743.061909158,
+        "Locked": 1,
+        "Timestamp": 1706284266
+    },
+    "Time": "2024-01-26T15:33:41.3607729Z"
 }
 ```
 
-Пример ошибки:
+Пример ошибки (HTTP Code 400):
+```json
+{
+    "Success": false,
+    "Error": {
+        "Message": "Invalid currency"
+    },
+    "Time": "2024-01-26T15:33:41.1856961Z"
+}
+```
+Пример ошибки (HTTP Code 401):
 ```json
 {
   "Success": false,
   "Error": {
     "Message": "Unauthorized"
-    "Time": "2023-09-05T10:25:06.6590684Z"
+    "Time": "2024-01-26T15:33:41.0658698Z"
   }
 }
 ```
+
+## <a id="crypto">Криптовалюта</a>
+
+### <a id="generate_deposit">Сгенерировать депозитный адрес</a>
+
+> ! ВНИМАНИЕ ! НА ДАННЫЙ МОМЕНТ ЗАПРОС РАБОТАЕТ ТОЛЬКО ДЛЯ СЕТИ **TRC20** ! 
+
+Тип запроса: **POST**
+
+Путь: **deposit/generate_address**
+
+Описание: **генерация адреса для депозита**
+
+Результат успешного выполнения: **возвращается json с идентификатором адреса, криптовалютным адресом и датой выполнения данной функции.**
+
+При ошибке: **возвращается код ответа 400 и текст ошибки, если:**
+- **валидация модели прошла неуспешно.**
+
+| Параметр | Тип | Обязательный | Примечание |
+| -- | -- | -- | -- |
+| Blockchain | string | обязательный | название сети |
+
+Пример запроса:
+```
+curl --location 'https://api.beribit.com/deposit/generate_address?Timestamp=2024-01-26T15:33:41' \
+--header 'UID: uid_insert_here' \
+--header 'Signature: signature-here' \
+--header 'Content-Type: application/json' \
+--data '{
+    "Blockchain": "TRC20"
+}'
+```
+
+Пример ответа (HTTP Code 200):
+```json
+{
+    "Success": true,
+    "Result": {
+        "AddressId": "6164815f-2440-408c-a613-d8a839cab2d5",
+        "Address": "TMTwMMhmZKz6Ay1TnzTMdDzAxDV5H66666",
+        "Time": "2023-09-15T09:49:11.8341287Z"
+    }
+}
+```
+
+Пример ошибки (HTTP Code 401):
+```json
+{
+  "Success": false,
+  "Error": {
+    "Message": "Unauthorized"
+    "Time": "2024-01-26T15:33:41.0658698Z"
+  }
+}
+```
+### <a id="history_deposit">Получить историю пополнений криптовалюты</a>
+
+! ВАЖНО: НА ДАННЫЙ МОМЕНТ ЗАПРОС РАБОТАЕТ ТОЛЬКО ДЛЯ СЕТИ **TRC20** ! 
+
+Тип запроса: **GET**
+
+Путь: **deposit/history**
+
+Описание: **данная функция отвечает за получение истории пополнения, также можно задать опциональные параметры для получения информации за конкретные периоды**
+
+Результат успешного выполнения: **возвращается список данных, каждая запись содержит в себе информацию: об адресе, об идентификаторе адреса, о хеше транзакции, о сети, о названии валюты, о сумме, о статусе и о времени**
+
+При ошибке: **возвращается код ответа 400 и текст ошибки, если:**
+- **валидация модели прошла неуспешно.**
+
+| Параметр | Тип | Обязательный | Значение по умолчанию | Примечание |
+| -- | -- | -- | -- | -- |
+| AddressId | string | обязательный | - | идентификатор адреса |
+| Blockchain | string | обязательный | - | название сети |
+| Limit | int? | опциональный | 100 | количество выгружаемых операций |
+| Offset | int? | опциональный | 0 | параметр, отвечающий за пропуск некоторого числа первых сделок |
+| FromDate | DateTime? | опциональный | DateTime.MinValue | нижний лимит выборки по времени создания операции |
+| ToDate | DateTime? | опциональный | DateTime.MaxValue | верхний лимит выборки по времени создания операции |
+
+Статусы заявки:
+
+- Pending (ожидание исполнения операции);
+- Executed (операция исполнена);
+- Cancelled (операция отменена).
+
+Пример запроса:
+```json
+curl --location 'https://api.beribit.com/deposit/history?Timestamp=2024-01-26T15:33:41' \
+--header 'UID: uid_insert_here' \
+--header 'Signature: signature-here'
+```
+
+Пример ответа (HTTP Code 200):
+```json
+{
+    "Success": true,
+    "Result": [
+        {
+            "Address": "TMTwMMhmZKz6Ay1TnzTMdDzAxDV5H66666",
+            "AddressId": "6164815f-2440-408c-a613-d8a839cab2d5",
+            "Txid": "6d58e075ff11c423a533a0b986238a36e60a41ef7716ef8393384f3b955e5a04",
+            "Blockchain": "TRC20",
+            "Currency": "USDT",
+            "Amount": 12950.59,
+            "Status": "Executed",
+            "Time": "2023-09-15T09:49:40.3404432Z"
+        },
+        {
+            "Address": "TMTwMMhmZKz6Ay1TnzTMdDzAxDV5H66666",
+            "AddressId": "6164815f-2440-408c-a613-d8a839cab2d5",
+            "Txid": "431498142770f180c5f1b808c9c070656461ea766496da8321507100b35a5776",
+            "Blockchain": "TRC20",
+            "Currency": "USDT",
+            "Amount": 501.42,
+            "Status": "Pending",
+            "Time": "2023-09-15T09:49:40.3404895Z"
+        },
+        {
+            "Address": "TMTwMMhmZKz6Ay1TnzTMdDzAxDV5H66666",
+            "AddressId": "6164815f-2440-408c-a613-d8a839cab2d5",
+            "Txid": null,
+            "Blockchain": "TRC20",
+            "Currency": "USDT",
+            "Amount": 1792.64,
+            "Status": "Cancelled",
+            "Time": "2023-09-15T09:49:40.3404899Z"
+        }
+    ]
+}
+```
+
+Пример ошибки (HTTP Code 401):
+```json
+{
+  "Success": false,
+  "Error": {
+    "Message": "Unauthorized"
+    "Time": "2024-01-26T15:33:41.0658698Z"
+  }
+}
+```
+
+## <a id="codes">Код BERIBIT</a>
+
+### <a id="transfer_code">Перевод валюты внутри платформы</a>
+
+Тип запроса: **POST**
+
+Путь: **code/withdraw**
+
+Описание: **данная функция отвечает за перевод внутри платформы между клиентами**
+
+Результат успешного выполнения: **возвращается код перевода (уникальный номер)**
+
+При ошибке: **возвращается код ответа 400 и текст ошибки, если:**
+- **валидация модели прошла неуспешно.**
+
+| Параметр | Тип | Обязательный | Значение по умолчанию | Примечание |
+| -- | -- | -- | -- | -- |
+| UserToId | string | обязательный | - | Beribit ID клиента (Доступен в разделе 'внутренние переводы' (https://beribit.com/wallet/codes)|
+| Amount | string | обязательный | - | Количество валюты |
+| Token | string | обязательный | - | Токен |
+
+Список токенов:
+
+- RUB;
+- USDT;
+- BTC;
+- ETH;
+- BNB
+- TRX.
+
+Пример ответа (HTTP Code 200):
+```
+curl --location 'https://api.beribit.com/code/withdraw?Timestamp=2024-01-26T15:33:41' \
+--header 'UID: uid_insert_here' \
+--header 'Signature: signature-here' \
+--header 'Content-Type: application/json' \
+--data '{
+    "Token": "RUB",
+    "UserToId": "BeribitID_Here",
+    "Amount": 0
+}'
+```
+Пример ответа (HTTP Code 200):
+```json
+{
+    "Success": true,
+    "Result": "32e2e57c-1e02-4b7c-77ff-bfb680d9374c",
+    "Time": "2023-10-20T12:54:31.9614616Z"
+}
+```
+
+Пример ошибки (HTTP Code 401):
+```json
+{
+  "Success": false,
+  "Error": {
+    "Message": "Unauthorized"
+    "Time": "2024-01-26T15:33:41.0658698Z"
+  }
+}
+```
+
