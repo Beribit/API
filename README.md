@@ -1673,6 +1673,7 @@ curl --location 'https://api.beribit.com/depth/USDT_RUB'
 | OrderBy | string | необязательный | Сортировка (необязательный, по умолчанию descending): descending - последний по времени оредний первый; ascending - последний по времени оредний последний |
 | Limit | int | необязательный | Кол-во ордеров в выгрузке (необязательный, по умолчанию 10, максимум 50) |
 | Offset | int | необязательный | Кол-во ордеров которые необходимо пропустить (необязательный, по умолчанию 0) |
+
 Пример запроса:
 ```
 curl --location 'https://api.beribit.com/orders/USDT_RUB?Timestamp=2024-01-28T18:30:21&OrderState=none&OrderBy=Descending&Limit=10&Offset=0' \
