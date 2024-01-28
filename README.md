@@ -131,7 +131,7 @@ POST https://api.beribit.com/orders?Timestamp=2023-08-20T13:51:00
 Результат успешного выполнения: **возвращается название криптовалюты, сумма на открытом счету, сумма на закрытом счету и таймштамп.**
 
 Пример ответа:
-```<json>
+```json
 {
     "Success": true,
     "Result": [
@@ -158,7 +158,7 @@ POST https://api.beribit.com/orders?Timestamp=2023-08-20T13:51:00
 ```
 
 Пример ошибки:
-```<json>
+```json
 {
   "Success": false,
   "Error": {
@@ -188,14 +188,14 @@ POST https://api.beribit.com/orders?Timestamp=2023-08-20T13:51:00
 | Currency | string | обязательный | валюта, баланс которой требуется получить |
 
 Пример запроса:
-```<json>
+```json
 {
   "Currency": "USDT",
 }
 ```
 
 <span style="color:green">Пример ответа (HTTP: 200):</span>
-```<json>
+```json
 {
     "Success": true,
     "Result": {
@@ -207,7 +207,7 @@ POST https://api.beribit.com/orders?Timestamp=2023-08-20T13:51:00
 ```
 
 Пример ошибки:
-```<json>
+```json
 {
   "Success": false,
   "Error": {
