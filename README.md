@@ -1953,7 +1953,7 @@ curl --location 'https://api.beribit.com/orders?Timestamp=2024-01-28T18:30:21' \
 | Price | decimal | обязательный для типа limit | - | Фикcированная цена |
 
 Пример ответа:
-```<json>
+```json
 {
     "Success": true,
     "Result": {
