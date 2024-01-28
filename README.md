@@ -20,6 +20,7 @@
 8.3 [Получить стакан по рынку](#trade_depth)<br/>
 8.4 [Получить историю торговых операций](#trade_operations)<br/>
 8.5 [Получить торговую операцию по id](#trade_id_operations)<br/>
+8.6 [Выставить ордер](#place_order)<br/>
 ---
 
 ## <a id="introduction">Введение</a>
@@ -1911,5 +1912,63 @@ curl --location 'https://api.beribit.com/order/59127345?Timestamp=2024-01-28T18:
     "Message": "Unauthorized"
     "Time": "2024-01-26T15:33:41.0658698Z"
   }
+}
+```
+### <a id="place_order">Выставить ордер</a>
+Тип запроса: **POST**
+
+Путь: **/orders**
+
+Описание: **запрос создаёт завку на покупку / продажу для выбранного рынка.**
+
+Результат успешного выполнения: **возвращается данные по выставленной заявке**
+
+Пример запроса:
+```
+curl --location 'https://api.beribit.com/orders?Timestamp=2024-01-28T18:30:21' \
+--header 'UID: uid-here' \
+--header 'Signature: signature-here'
+--header 'Content-Type: application/json' \
+--data '{
+    "Market": "USDT_RUB",
+    "Volume": 100.0,
+    "Price": 92.0, 
+    "OrderSide": "buy", 
+    "OrderType": "limit" 
+}'
+```
+
+
+При ошибке: **возвращается код ответа 400 и текст ошибки, если:**
+- **валидация модели прошла неуспешно.**
+
+| Параметр | Тип | Обязательный | Значение по умолчанию | Примечание |
+| -- | -- | -- | -- | -- |
+| Market | string | обязательный | - | название (ид) рынка |
+| Volume | decimal | обязательный | - | Cумма в валюте продажи |
+| OrderSide | string | обязательный | - | Направление заявки, buy или sell |
+| OrderType | string | обязательный | - | Тип заявки (limit/market) |
+| Price | decimal | обязательный для типа limit | - | Фикcированная цена |
+
+Пример ответа:
+```<json>
+{
+    "Success": true,
+    "Result": {
+        "id": 61938327,
+        "market": "USDT_RUB",
+        "remaining_volume": 99.36,
+        "executed_volume": 0,
+        "volume": 99.36,
+        "side": "Buy",
+        "ord_type": "Market",
+        "state": "Wait",
+        "funds_received": 0,
+        "funds_fee": 0,
+        "trades_count": 0,
+        "created_at": "2024-01-28T19:02:07.9552322Z",
+        "updated_at": "2024-01-28T19:02:07.9552322Z"
+    },
+    "Time": "2024-01-28T19:02:07.9685794Z"
 }
 ```
