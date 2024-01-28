@@ -12,8 +12,8 @@
 6.1 [Сгенерировать депозитный адрес](#generate_deposit)<br/>
 6.2 [Получить историю пополнений криптовалюты](#history_deposit)<br/>
 7. [Код BERIBIT](#codes)<br/>
-7.1 [Перевод валюты внутри платформы](#transfer_code)<br/>
-
+7.1 [Перевод внутри платформы](#transfer_code)<br/>
+7.2 [Применить код](#deposit_code)<br/>
 ---
 
 ## <a id="introduction">Введение</a>
@@ -259,7 +259,12 @@ curl --location 'https://api.beribit.com/account/USDT?Timestamp=2024-01-26T15:33
 }
 ```
 
+---
+
+
 ## <a id="crypto">Криптовалюта</a>
+
+---
 
 ### <a id="generate_deposit">Сгенерировать депозитный адрес</a>
 
@@ -313,6 +318,9 @@ curl --location 'https://api.beribit.com/deposit/generate_address?Timestamp=2024
   }
 }
 ```
+
+---
+
 ### <a id="history_deposit">Получить историю пополнений криптовалюты</a>
 
 ! ВАЖНО: НА ДАННЫЙ МОМЕНТ ЗАПРОС РАБОТАЕТ ТОЛЬКО ДЛЯ СЕТИ **TRC20** ! 
@@ -400,9 +408,13 @@ curl --location 'https://api.beribit.com/deposit/history?Timestamp=2024-01-26T15
 }
 ```
 
+---
+
 ## <a id="codes">Код BERIBIT</a>
 
-### <a id="transfer_code">Перевод валюты внутри платформы</a>
+---
+
+### <a id="transfer_code">Перевод внутри платформы</a>
 
 Тип запроса: **POST**
 
@@ -470,5 +482,65 @@ curl --location 'https://api.beribit.com/code/withdraw?Timestamp=2024-01-26T15:3
         "Message": "UserToId not found"
     },
     "Time": "2024-01-26T15:33:41.9324992Z"
+}
+```
+
+---
+
+### <a id="deposit_code">Применить код</a>
+
+Тип запроса: **POST**
+
+Путь: **code/withdraw**
+
+Описание: **данная функция отвечает за применение крла**
+
+Результат успешного выполнения: **возвращается сумму принятого RUB-кода**
+
+При ошибке: **возвращается код ответа 400 и текст ошибки, если:**
+- **валидация модели прошла неуспешно.**
+
+| Параметр | Тип | Обязательный | Значение по умолчанию | Примечание |
+| -- | -- | -- | -- | -- |
+| Code | string | обязательный | - | Beribit Code |
+
+Пример ответа (HTTP Code 200):
+```
+curl --location 'https://api.beribit.com/code/deposit?Timestamp=2024-01-26T15:33:41' \
+--header 'UID: uid-here' \
+--header 'Signature: signature-here' \
+--header 'Content-Type: application/json' \
+--data '{
+    "Code": "beribitcode00000000000000000000000000000000"
+}'
+```
+Пример ответа (HTTP Code 200):
+```json
+{
+    "Success": true,
+    "Result": 10,
+    "Time": "2024-01-28T18:14:44.3713744Z"
+}
+```
+
+Пример ошибки (HTTP Code 401):
+```json
+{
+  "Success": false,
+  "Error": {
+    "Message": "Unauthorized"
+    "Time": "2024-01-26T15:33:41.0658698Z"
+  }
+}
+```
+
+Пример ошибки (HTTP Code 400):
+```json
+{
+    "Success": false,
+    "Error": {
+        "Message": "Code not found"
+    },
+    "Time": "2024-01-26T15:33:41.0658698Z"
 }
 ```
