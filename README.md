@@ -14,6 +14,8 @@
 7. [Код BERIBIT](#codes)<br/>
 7.1 [Перевод внутри платформы](#transfer_code)<br/>
 7.2 [Применить код](#deposit_code)<br/>
+8. [Торговые операции](#trade)<br/>
+8.1 [Получить рынки](#trade_markets)<br/>
 ---
 
 ## <a id="introduction">Введение</a>
@@ -127,6 +129,8 @@ POST https://api.beribit.com/orders?Timestamp=2023-08-20T13:51:00
 
 ### <a id="balance_all">Получение баланса по всем валютам</a>
 
+Авторизация: **Требуется**
+
 Тип запроса: **GET**
 
 Путь: **/accounts**
@@ -203,6 +207,8 @@ curl --location 'https://api.beribit.com/accounts?Timestamp=2024-01-26T15:33:41'
 
 ### <a id="balance_token">Функция получения баланса по конкретной валюте</a>
 
+Авторизация: **Требуется**
+
 Тип запроса: **GET**
 
 Путь: **/account/{currency}**
@@ -270,6 +276,8 @@ curl --location 'https://api.beribit.com/account/USDT?Timestamp=2024-01-26T15:33
 
 > ! ВНИМАНИЕ ! НА ДАННЫЙ МОМЕНТ ЗАПРОС РАБОТАЕТ ТОЛЬКО ДЛЯ СЕТИ **TRC20** ! 
 
+Авторизация: **Требуется**
+
 Тип запроса: **POST**
 
 Путь: **deposit/generate_address**
@@ -324,6 +332,8 @@ curl --location 'https://api.beribit.com/deposit/generate_address?Timestamp=2024
 ### <a id="history_deposit">Получить историю пополнений криптовалюты</a>
 
 ! ВАЖНО: НА ДАННЫЙ МОМЕНТ ЗАПРОС РАБОТАЕТ ТОЛЬКО ДЛЯ СЕТИ **TRC20** ! 
+
+Авторизация: **Требуется**
 
 Тип запроса: **GET**
 
@@ -416,6 +426,8 @@ curl --location 'https://api.beribit.com/deposit/history?Timestamp=2024-01-26T15
 
 ### <a id="transfer_code">Перевод внутри платформы</a>
 
+Авторизация: **Требуется**
+
 Тип запроса: **POST**
 
 Путь: **code/withdraw**
@@ -489,6 +501,8 @@ curl --location 'https://api.beribit.com/code/withdraw?Timestamp=2024-01-26T15:3
 
 ### <a id="deposit_code">Применить код</a>
 
+Авторизация: **Требуется**
+
 Тип запроса: **POST**
 
 Путь: **code/withdraw**
@@ -542,5 +556,151 @@ curl --location 'https://api.beribit.com/code/deposit?Timestamp=2024-01-26T15:33
         "Message": "Code not found"
     },
     "Time": "2024-01-26T15:33:41.0658698Z"
+}
+```
+
+---
+
+## <a id="trade">Торговые операции</a>
+
+---
+
+### <a id="trade_markets">Получить рынки</a>
+Тип запроса: **GET**
+
+Авторизация: **не требуется**
+
+Путь: **/markets**
+
+Описание: **данная функция отвечает за получение данных по рынкам**
+
+Результат успешного выполнения: **возвращается список данных, каждая запись содержит в себе информацию: об названии (ид) рынка, код валюты цены, код валюты лота, минимальный размер лота**
+
+| Параметр | Тип | Обязательный | Примечание |
+| -- | -- | -- | -- |
+| Currency | string | обязательный | валюта, баланс которой требуется получить |
+
+Пример запроса:
+```
+curl --location 'https://api.beribit.com/markets'
+```
+
+Пример ответа (HTTP Code 200):
+```json
+{
+  "Success": true,
+  "Result": [
+    {
+      "id": "USDT_RUB",
+      "price_unit": "RUB",
+      "price_step": 0.01,
+      "lot_unit": "USDT",
+      "lot_min": 0.01,
+      "size_step": 0.01
+    },
+    {
+      "id": "ETH_USDT",
+      "price_unit": "USDT",
+      "price_step": 0.01,
+      "lot_unit": "ETH",
+      "lot_min": 0.001,
+      "size_step": 0.001
+    },
+    {
+      "id": "BTC_USDT",
+      "price_unit": "USDT",
+      "price_step": 0.01,
+      "lot_unit": "BTC",
+      "lot_min": 0.0001,
+      "size_step": 0.0001
+    },
+    {
+      "id": "BNB_USDT",
+      "price_unit": "USDT",
+      "price_step": 0.01,
+      "lot_unit": "BNB",
+      "lot_min": 0.0001,
+      "size_step": 0.0001
+    },
+    {
+      "id": "TRX_USDT",
+      "price_unit": "USDT",
+      "price_step": 0.01,
+      "lot_unit": "TRX",
+      "lot_min": 0.0001,
+      "size_step": 0.0001
+    }
+  ],
+  "Time": "2024-01-28T18:21:49.8592526Z"
+}
+```
+
+### <a id="trade_markets">Получить комиссии</a>
+Тип запроса: **GET**
+
+Авторизация: **Требуется**
+
+Путь: **/markets**
+
+Описание: **данная функция отвечает за получение данных по рынкам**
+
+Результат успешного выполнения: **возвращается список данных, каждая запись содержит в себе информацию: об названии (ид) рынка, код валюты цены, код валюты лота, минимальный размер лота**
+
+| Параметр | Тип | Обязательный | Примечание |
+| -- | -- | -- | -- |
+| Currency | string | обязательный | валюта, баланс которой требуется получить |
+
+Пример запроса:
+```
+curl --location 'https://api.beribit.com/markets'
+```
+
+Пример ответа (HTTP Code 200):
+```json
+{
+  "Success": true,
+  "Result": [
+    {
+      "id": "USDT_RUB",
+      "price_unit": "RUB",
+      "price_step": 0.01,
+      "lot_unit": "USDT",
+      "lot_min": 0.01,
+      "size_step": 0.01
+    },
+    {
+      "id": "ETH_USDT",
+      "price_unit": "USDT",
+      "price_step": 0.01,
+      "lot_unit": "ETH",
+      "lot_min": 0.001,
+      "size_step": 0.001
+    },
+    {
+      "id": "BTC_USDT",
+      "price_unit": "USDT",
+      "price_step": 0.01,
+      "lot_unit": "BTC",
+      "lot_min": 0.0001,
+      "size_step": 0.0001
+    },
+    {
+      "id": "BNB_USDT",
+      "price_unit": "USDT",
+      "price_step": 0.01,
+      "lot_unit": "BNB",
+      "lot_min": 0.0001,
+      "size_step": 0.0001
+    },
+    {
+      "id": "TRX_USDT",
+      "price_unit": "USDT",
+      "price_step": 0.01,
+      "lot_unit": "TRX",
+      "lot_min": 0.0001,
+      "size_step": 0.0001
+    }
+  ],
+  "Time": "2024-01-28T18:21:49.8592526Z"
 }
 ```
