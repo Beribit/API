@@ -22,7 +22,6 @@
 8.5 [Получить торговую операцию по id](#trade_id_operations)<br/>
 8.6 [Выставить ордер](#place_order)<br/>
 8.7 [Отменить торговую заявку](#cancel_order)<br/>
-
 ---
 
 ## <a id="introduction">Введение</a>
@@ -647,11 +646,56 @@ curl --location 'https://api.beribit.com/markets'
 
 Авторизация: **Требуется**
 
-Путь: **/markets**
+Путь: **/commission**
 
-Описание: **данная функция отвечает за получение данных по рынкам**
+Описание: **данная функция отвечает за получение данных по комиссии**
 
-Результат успешного выполнения: **возвращается список данных, каждая запись содержит в себе информацию: об названии (ид) рынка, код валюты цены, код валюты лота, минимальный размер лота**
+Результат успешного выполнения: **возвращает комиссии по лимитным и рыночным ордерам**
+
+Пример расчета комиссии:
+**Продажа**
+```
+Хочу продать 1000 USDT по цене 100 RUB
+Должен получить без учета комиссии 100 000 RUB
+
+Для лимитного ордера:
+remainingVolumeWithFee = 100 000 RUB
+Fee = LimitOrder
+remainingVolumeWithoutFee = remainingVolumeWithFee - (remainingVolumeWithFee * Fee)
+
+remainingVolumeWithoutFee = 100 000 RUB - (100 000 RUB * 0.0010)
+remainingVolumeWithoutFee = 99 900 RUB
+
+Для рыночного ордера:
+remainingVolumeWithFee = 100 000 RUB
+Fee = MarketOrder
+remainingVolumeWithoutFee = remainingVolumeWithFee - (remainingVolumeWithFee * Fee)
+
+remainingVolumeWithoutFee = 100 000 RUB - (100 000 RUB * 0.0015)
+remainingVolumeWithoutFee = 99 850 RUB
+```
+
+**Покупка**
+```
+Хочу купить 1000 USDT по цене 100 RUB
+Должен получить без учета комиссии 1000 USDT
+
+Для лимитного ордера:
+remainingVolumeWithFee = 1000 USDT
+Fee = LimitOrder
+remainingVolumeWithoutFee = remainingVolumeWithFee - (remainingVolumeWithFee * Fee)
+
+remainingVolumeWithoutFee = 1000 USDT - (1000 USDT * 0.0010)
+remainingVolumeWithoutFee = 999 USDT
+
+Для рыночного ордера:
+remainingVolumeWithFee = 1000 USDT
+Fee = MarketOrder
+remainingVolumeWithoutFee = remainingVolumeWithFee - (remainingVolumeWithFee * Fee)
+
+remainingVolumeWithoutFee = 1000 USDT - (1000 USDT * 0.0015)
+remainingVolumeWithoutFee = 998.5 USDT
+```
 
 | Параметр | Тип | Обязательный | Примечание |
 | -- | -- | -- | -- |
